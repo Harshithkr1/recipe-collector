@@ -4,84 +4,124 @@
   padding: 0;
 }
 
-/* Layered warm background on the full page */
+/* Rich food-themed background with scattered emoji decorations */
 html {
   min-height: 100%;
   background:
-    radial-gradient(ellipse at 20% 0%, rgba(251, 191, 36, 0.15) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 100%, rgba(249, 115, 22, 0.12) 0%, transparent 55%),
-    linear-gradient(160deg, #fffbf5 0%, #fff1e1 35%, #ffe4c9 65%, #fdd8b0 100%);
+    radial-gradient(ellipse at 15% 10%, rgba(234, 88, 12, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 20%, rgba(251, 191, 36, 0.10) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 80%, rgba(249, 115, 22, 0.07) 0%, transparent 50%),
+    linear-gradient(170deg, #fef9f2 0%, #fef0db 30%, #fde5c3 60%, #fcd9a8 100%);
   background-attachment: fixed;
 }
 
 body {
   font-family: 'Poppins', Arial, sans-serif;
-  color: #431407;
+  color: #3b1106;
   min-height: 100vh;
-  max-width: 650px;
+  max-width: 660px;
   margin: 0 auto;
-  padding: 36px 20px 60px;
+  padding: 40px 20px 60px;
   position: relative;
+  overflow-x: hidden;
 }
 
-/* Soft animated glow that drifts across the page */
-body::before {
-  content: '';
+/* Floating food emoji decorations */
+body::before,
+body::after {
   position: fixed;
-  top: -40%;
-  left: -30%;
-  width: 160%;
-  height: 160%;
-  background:
-    radial-gradient(circle at 30% 40%, rgba(251, 146, 60, 0.10) 0%, transparent 50%),
-    radial-gradient(circle at 70% 70%, rgba(253, 186, 116, 0.08) 0%, transparent 45%);
-  animation: bgDrift 18s ease-in-out infinite alternate;
   pointer-events: none;
   z-index: 0;
+  opacity: 0.12;
+  font-size: 2.2rem;
+  line-height: 1;
 }
 
-@keyframes bgDrift {
-  0%   { transform: translate(0, 0) scale(1); }
-  50%  { transform: translate(3%, -4%) scale(1.05); }
-  100% { transform: translate(-2%, 3%) scale(1); }
+body::before {
+  content: '🍅  🧅  🌶️  🥘  🍛';
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  letter-spacing: 18px;
+  animation: floatLeft 25s linear infinite;
 }
 
-/* Ensure all page content sits above the animated glow */
+body::after {
+  content: '🥄  🍲  🫕  🧈  🌿';
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  letter-spacing: 18px;
+  animation: floatRight 30s linear infinite;
+}
+
+@keyframes floatLeft {
+  0%   { transform: translateX(-50%) translateY(0); }
+  50%  { transform: translateX(-50%) translateY(-6px); }
+  100% { transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes floatRight {
+  0%   { transform: translateX(-50%) translateY(0); }
+  50%  { transform: translateX(-50%) translateY(5px); }
+  100% { transform: translateX(-50%) translateY(0); }
+}
+
+/* Content above decorations */
 body > * {
   position: relative;
   z-index: 1;
 }
 
-
+/* Page heading with subtle text shadow */
 h1 {
   text-align: center;
-  font-size: 2.25rem;
+  font-size: 2.3rem;
   font-weight: 700;
-  color: #431407;
-  margin-bottom: 28px;
+  color: #3b1106;
+  margin-bottom: 8px;
   letter-spacing: -0.5px;
+  text-shadow: 0 2px 8px rgba(234, 88, 12, 0.10);
 }
 
-/* Form card with soft shadow */
+/* Subtitle-style tagline under heading */
+h1::after {
+  content: 'Save your favourite recipes in one place 🧡';
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #9a5a3a;
+  margin-top: 6px;
+  letter-spacing: 0;
+  text-shadow: none;
+}
+
+/* ─── Form card ─── */
 .form-box {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 10px 25px -5px rgba(120, 53, 15, 0.08), 0 8px 10px -6px rgba(120, 53, 15, 0.04);
-  margin-bottom: 28px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(253, 186, 116, 0.35);
+  border-radius: 18px;
+  padding: 26px;
+  box-shadow:
+    0 12px 28px -6px rgba(120, 53, 15, 0.09),
+    0 4px 10px -4px rgba(120, 53, 15, 0.04);
+  margin-top: 24px;
+  margin-bottom: 32px;
 }
 
-/* Inputs & textareas: rounded corners, padding, orange glow on focus */
+/* Inputs & textareas */
 .form-box input,
 .form-box textarea {
   display: block;
   width: 100%;
   font-family: 'Poppins', Arial, sans-serif;
   font-size: 14px;
-  color: #431407;
-  background-color: #fffaf5;
-  border: 1.5px solid #fed7aa;
-  border-radius: 10px;
+  color: #3b1106;
+  background-color: rgba(255, 251, 245, 0.9);
+  border: 1.5px solid #fcd4a8;
+  border-radius: 11px;
   padding: 12px 14px;
   margin-bottom: 14px;
   outline: none;
@@ -102,10 +142,10 @@ h1 {
 .form-box textarea:focus {
   border-color: #f97316;
   background-color: #ffffff;
-  box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.18);
+  box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.16);
 }
 
-/* Add Recipe button: orange, rounded, with hover effect */
+/* Add Recipe button */
 #addBtn {
   display: block;
   width: 100%;
@@ -113,35 +153,38 @@ h1 {
   font-size: 15px;
   font-weight: 600;
   color: #ffffff;
-  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  background: linear-gradient(135deg, #f97316 0%, #dc5b0a 100%);
   border: none;
-  border-radius: 10px;
-  padding: 12px 20px;
+  border-radius: 11px;
+  padding: 13px 20px;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+  letter-spacing: 0.3px;
+  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.30);
   transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
 #addBtn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(234, 88, 12, 0.4);
-  filter: brightness(1.05);
+  box-shadow: 0 7px 20px rgba(234, 88, 12, 0.40);
+  filter: brightness(1.06);
 }
 
 #addBtn:active {
   transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(234, 88, 12, 0.3);
+  box-shadow: 0 2px 8px rgba(234, 88, 12, 0.25);
 }
 
-/* .recipe card: white, rounded, shadow, orange left border, lifts on hover */
+/* ─── Recipe cards ─── */
 .recipe {
-  background: #ffffff;
-  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.90);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 16px;
   padding: 0;
-  margin-top: 16px;
-  border-left: 6px solid #f97316;
-  box-shadow: 0 4px 16px rgba(120, 53, 15, 0.08);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  margin-top: 18px;
+  border-left: 5px solid #f97316;
+  box-shadow: 0 4px 18px rgba(120, 53, 15, 0.07);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   word-wrap: break-word;
   overflow: hidden;
 }
@@ -151,7 +194,7 @@ h1 {
   width: 100%;
   height: 200px;
   overflow: hidden;
-  background-color: #fff7ed;
+  background-color: #fef5ea;
 }
 
 .recipe-img img {
@@ -159,9 +202,15 @@ h1 {
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.4s ease;
 }
 
-/* Placeholder shown when no image URL or image fails to load */
+/* Subtle zoom on card hover */
+.recipe:hover .recipe-img img {
+  transform: scale(1.04);
+}
+
+/* Placeholder for missing images */
 .recipe-img-placeholder {
   width: 100%;
   height: 100%;
@@ -169,34 +218,45 @@ h1 {
   align-items: center;
   justify-content: center;
   font-size: 3.5rem;
-  background: linear-gradient(135deg, #fff7ed 0%, #fed7aa 100%);
+  background: linear-gradient(135deg, #fff7ed 0%, #fde1b9 100%);
 }
 
 .recipe:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 24px rgba(120, 53, 15, 0.14);
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px rgba(120, 53, 15, 0.14);
 }
 
 .recipe h3 {
-  color: #431407;
-  font-size: 1.25rem;
+  color: #3b1106;
+  font-size: 1.2rem;
   font-weight: 600;
-  margin: 16px 20px 10px;
+  margin: 16px 20px 8px;
+}
+
+/* Small decorative line under recipe name */
+.recipe h3::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(90deg, #f97316, #fbbf24);
+  border-radius: 3px;
+  margin-top: 6px;
 }
 
 .recipe p {
   color: #57331e;
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: 13.5px;
+  line-height: 1.65;
   margin: 8px 20px;
 }
 
 .recipe p strong {
-  color: #ea580c;
+  color: #d9520c;
   font-weight: 600;
 }
 
-/* Delete button: red, small, rounded */
+/* Delete button */
 .recipe button {
   font-family: 'Poppins', Arial, sans-serif;
   background-color: #ef4444;
@@ -207,39 +267,64 @@ h1 {
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  margin: 10px 20px 16px;
-  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.25);
+  margin: 12px 20px 18px;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.22);
   transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
 }
 
 .recipe button:hover {
   background-color: #dc2626;
   transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(220, 38, 38, 0.35);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);
 }
 
 .recipe button:active {
   transform: translateY(0);
 }
 
-/* Mobile responsive layout */
+/* ─── Mobile responsive ─── */
 @media (max-width: 480px) {
   body {
     padding: 24px 14px 40px;
   }
 
+  body::before,
+  body::after {
+    font-size: 1.5rem;
+    letter-spacing: 10px;
+  }
+
   h1 {
     font-size: 1.8rem;
-    margin-bottom: 20px;
+    margin-bottom: 6px;
+  }
+
+  h1::after {
+    font-size: 0.75rem;
   }
 
   .form-box {
-    padding: 16px;
+    padding: 18px;
     border-radius: 14px;
   }
 
   .recipe {
-    padding: 16px;
     border-radius: 12px;
+  }
+
+  .recipe-img {
+    height: 160px;
+  }
+
+  .recipe h3 {
+    margin: 12px 14px 8px;
+  }
+
+  .recipe p {
+    margin: 6px 14px;
+  }
+
+  .recipe button {
+    margin: 10px 14px 14px;
   }
 }
