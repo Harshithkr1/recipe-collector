@@ -1,27 +1,179 @@
-body {
-  font-family: Arial, sans-serif;
-  max-width: 600px;
-  margin: 30px auto;
-  padding: 0 15px;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
+body {
+  font-family: 'Poppins', Arial, sans-serif;
+  color: #431407;
+  background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 50%, #fed7aa 100%);
+  min-height: 100vh;
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 36px 20px 60px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #431407;
+  margin-bottom: 28px;
+  letter-spacing: -0.5px;
+}
+
+/* Form card with soft shadow */
+.form-box {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 25px -5px rgba(120, 53, 15, 0.08), 0 8px 10px -6px rgba(120, 53, 15, 0.04);
+  margin-bottom: 28px;
+}
+
+/* Inputs & textareas: rounded corners, padding, orange glow on focus */
 .form-box input,
 .form-box textarea {
   display: block;
   width: 100%;
-  margin-bottom: 10px;
-  padding: 8px;
-  box-sizing: border-box;
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 14px;
+  color: #431407;
+  background-color: #fffaf5;
+  border: 1.5px solid #fed7aa;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
-button {
-  padding: 8px 14px;
+.form-box textarea {
+  min-height: 85px;
+  resize: vertical;
+}
+
+.form-box input::placeholder,
+.form-box textarea::placeholder {
+  color: #a8826d;
+}
+
+.form-box input:focus,
+.form-box textarea:focus {
+  border-color: #f97316;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.18);
+}
+
+/* Add Recipe button: orange, rounded, with hover effect */
+#addBtn {
+  display: block;
+  width: 100%;
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  border: none;
+  border-radius: 10px;
+  padding: 12px 20px;
   cursor: pointer;
+  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
+#addBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(234, 88, 12, 0.4);
+  filter: brightness(1.05);
+}
+
+#addBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(234, 88, 12, 0.3);
+}
+
+/* .recipe card: white, rounded, shadow, orange left border, lifts on hover */
 .recipe {
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 10px;
-  margin-top: 12px;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 20px;
+  margin-top: 16px;
+  border-left: 6px solid #f97316;
+  box-shadow: 0 4px 16px rgba(120, 53, 15, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  word-wrap: break-word;
+}
+
+.recipe:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(120, 53, 15, 0.14);
+}
+
+.recipe h3 {
+  color: #431407;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.recipe p {
+  color: #57331e;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 8px 0;
+}
+
+.recipe p strong {
+  color: #ea580c;
+  font-weight: 600;
+}
+
+/* Delete button: red, small, rounded */
+.recipe button {
+  font-family: 'Poppins', Arial, sans-serif;
+  background-color: #ef4444;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 10px;
+  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.25);
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.recipe button:hover {
+  background-color: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(220, 38, 38, 0.35);
+}
+
+.recipe button:active {
+  transform: translateY(0);
+}
+
+/* Mobile responsive layout */
+@media (max-width: 480px) {
+  body {
+    padding: 24px 14px 40px;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+
+  .form-box {
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .recipe {
+    padding: 16px;
+    border-radius: 12px;
+  }
 }
