@@ -39,17 +39,54 @@
   <header class="header-box">
     <h1>🍳 Recipe Collector</h1>
     <p class="tagline">~ Your personal family cookbook ~</p>
+    <div class="stats-bar" id="statsBar">
+      <span class="stat-item" id="statTotal">📖 0 Recipes</span>
+      <span class="stat-divider">•</span>
+      <span class="stat-item" id="statFavorites">❤️ 0 Favourites</span>
+      <span class="stat-divider">•</span>
+      <span class="stat-item" id="statCategories">📂 5 Categories</span>
+    </div>
   </header>
 
   <div class="form-box">
-    <input type="text" id="name" placeholder="Recipe name">
-    <textarea id="ingredients" placeholder="Ingredients"></textarea>
-    <textarea id="steps" placeholder="Steps"></textarea>
+    <h2 class="form-title">✦ Write a New Recipe ✦</h2>
+    <input type="text" id="name" placeholder="Recipe name (e.g. Grandma's Butter Chicken)">
+    
+    <div class="form-field-group">
+      <label for="category" class="field-label">Category</label>
+      <select id="category" class="category-select">
+        <option value="Breakfast">🥞 Breakfast & Brunch</option>
+        <option value="Main Course" selected>🍛 Main Course</option>
+        <option value="Snacks">🥗 Snacks & Quick Bites</option>
+        <option value="Desserts">🍧 Desserts & Sweets</option>
+        <option value="Drinks">☕ Beverages & Drinks</option>
+      </select>
+    </div>
+
+    <textarea id="ingredients" placeholder="Ingredients (one per line or comma-separated)"></textarea>
+    <textarea id="steps" placeholder="Cooking steps and secret tips..."></textarea>
     <input type="text" id="imageUrl" placeholder="Image URL (optional)">
     <button id="addBtn">Add Recipe</button>
   </div>
 
+  <!-- Search & Category Filters -->
+  <section class="controls-panel">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search recipes by name or ingredient...">
+      <button id="clearSearchBtn" class="clear-search-btn" title="Clear search" style="display: none;">✕</button>
+    </div>
+
+    <!-- Category filter tabs -->
+    <div class="category-tabs" id="categoryTabs">
+      <!-- Injected by script.js -->
+    </div>
+  </section>
+
   <div id="recipeList"></div>
+
+  <!-- Micro-interaction Toast -->
+  <div id="toast" class="cookbook-toast" aria-live="polite"></div>
 
   <script src="script.js"></script>
 </body>
