@@ -98,12 +98,39 @@ h1 {
 .recipe {
   background: #ffffff;
   border-radius: 14px;
-  padding: 20px;
+  padding: 0;
   margin-top: 16px;
   border-left: 6px solid #f97316;
   box-shadow: 0 4px 16px rgba(120, 53, 15, 0.08);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   word-wrap: break-word;
+  overflow: hidden;
+}
+
+/* Recipe image area */
+.recipe-img {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background-color: #fff7ed;
+}
+
+.recipe-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Placeholder shown when no image URL or image fails to load */
+.recipe-img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+  background: linear-gradient(135deg, #fff7ed 0%, #fed7aa 100%);
 }
 
 .recipe:hover {
@@ -115,14 +142,14 @@ h1 {
   color: #431407;
   font-size: 1.25rem;
   font-weight: 600;
-  margin-bottom: 10px;
+  margin: 16px 20px 10px;
 }
 
 .recipe p {
   color: #57331e;
   font-size: 14px;
   line-height: 1.6;
-  margin: 8px 0;
+  margin: 8px 20px;
 }
 
 .recipe p strong {
@@ -141,7 +168,7 @@ h1 {
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  margin-top: 10px;
+  margin: 10px 20px 16px;
   box-shadow: 0 2px 6px rgba(239, 68, 68, 0.25);
   transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
 }
