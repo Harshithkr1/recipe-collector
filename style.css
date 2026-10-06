@@ -4,197 +4,234 @@
   padding: 0;
 }
 
-/* Rich food-themed background with scattered emoji decorations */
+/* ─── Parchment-style page background ─── */
 html {
   min-height: 100%;
-  background:
-    radial-gradient(ellipse at 15% 10%, rgba(234, 88, 12, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 85% 20%, rgba(251, 191, 36, 0.10) 0%, transparent 45%),
-    radial-gradient(ellipse at 50% 80%, rgba(249, 115, 22, 0.07) 0%, transparent 50%),
-    linear-gradient(170deg, #fef9f2 0%, #fef0db 30%, #fde5c3 60%, #fcd9a8 100%);
+  background-color: #f5ebe0;
+  background-image:
+    /* subtle paper grain texture via repeating gradients */
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(160, 120, 80, 0.015) 2px,
+      rgba(160, 120, 80, 0.015) 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(160, 120, 80, 0.012) 2px,
+      rgba(160, 120, 80, 0.012) 4px
+    ),
+    radial-gradient(ellipse at 30% 20%, rgba(210, 160, 100, 0.15) 0%, transparent 60%),
+    radial-gradient(ellipse at 75% 80%, rgba(180, 120, 60, 0.10) 0%, transparent 55%),
+    linear-gradient(175deg, #faf3eb 0%, #f0e2d0 40%, #e8d5bc 70%, #dfc8a8 100%);
   background-attachment: fixed;
 }
 
 body {
-  font-family: 'Poppins', Arial, sans-serif;
-  color: #3b1106;
+  font-family: 'Nunito', Georgia, serif;
+  color: #3e2215;
   min-height: 100vh;
-  max-width: 660px;
+  max-width: 680px;
   margin: 0 auto;
-  padding: 40px 20px 60px;
+  padding: 44px 22px 70px;
   position: relative;
   overflow-x: hidden;
 }
 
-/* Floating food emoji decorations */
+/* Warm decorative border lines at top & bottom of page */
 body::before,
 body::after {
+  content: '';
   position: fixed;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    #c4956a 15%,
+    #a0714a 35%,
+    #8b5e3c 50%,
+    #a0714a 65%,
+    #c4956a 85%,
+    transparent 100%
+  );
+  z-index: 10;
   pointer-events: none;
-  z-index: 0;
-  opacity: 0.12;
-  font-size: 2.2rem;
-  line-height: 1;
 }
 
-body::before {
-  content: '🍅  🧅  🌶️  🥘  🍛';
-  top: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  letter-spacing: 18px;
-  animation: floatLeft 25s linear infinite;
-}
+body::before { top: 0; }
+body::after  { bottom: 0; }
 
-body::after {
-  content: '🥄  🍲  🫕  🧈  🌿';
-  bottom: 14px;
-  left: 50%;
-  transform: translateX(-50%);
-  letter-spacing: 18px;
-  animation: floatRight 30s linear infinite;
-}
-
-@keyframes floatLeft {
-  0%   { transform: translateX(-50%) translateY(0); }
-  50%  { transform: translateX(-50%) translateY(-6px); }
-  100% { transform: translateX(-50%) translateY(0); }
-}
-
-@keyframes floatRight {
-  0%   { transform: translateX(-50%) translateY(0); }
-  50%  { transform: translateX(-50%) translateY(5px); }
-  100% { transform: translateX(-50%) translateY(0); }
-}
-
-/* Content above decorations */
+/* Content sits above decorations */
 body > * {
   position: relative;
   z-index: 1;
 }
 
-/* Page heading with subtle text shadow */
+/* ─── Main heading (cookbook title) ─── */
 h1 {
+  font-family: 'Playfair Display', Georgia, serif;
   text-align: center;
-  font-size: 2.3rem;
-  font-weight: 700;
-  color: #3b1106;
-  margin-bottom: 8px;
-  letter-spacing: -0.5px;
-  text-shadow: 0 2px 8px rgba(234, 88, 12, 0.10);
+  font-size: 2.6rem;
+  font-weight: 800;
+  color: #4a2511;
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 2px rgba(80, 40, 10, 0.08);
 }
 
-/* Subtitle-style tagline under heading */
-h1::after {
-  content: 'Save your favourite recipes in one place 🧡';
-  display: block;
-  font-size: 0.85rem;
+/* Tagline below heading */
+.tagline {
+  text-align: center;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
   font-weight: 400;
-  color: #9a5a3a;
-  margin-top: 6px;
-  letter-spacing: 0;
-  text-shadow: none;
+  font-size: 1rem;
+  color: #8b6f56;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
 }
 
-/* ─── Form card ─── */
+/* Decorative divider under tagline */
+.tagline::after {
+  content: '✦  ✦  ✦';
+  display: block;
+  margin-top: 12px;
+  font-style: normal;
+  font-size: 0.7rem;
+  color: #c4956a;
+  letter-spacing: 8px;
+}
+
+/* ─── Form card (looks like a recipe notecard) ─── */
 .form-box {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(253, 186, 116, 0.35);
-  border-radius: 18px;
-  padding: 26px;
+  background: linear-gradient(180deg, #fffcf7 0%, #fdf6ec 100%);
+  border: 1px solid #d9c4a5;
+  border-radius: 4px;
+  padding: 28px 26px;
+  margin-top: 20px;
+  margin-bottom: 36px;
   box-shadow:
-    0 12px 28px -6px rgba(120, 53, 15, 0.09),
-    0 4px 10px -4px rgba(120, 53, 15, 0.04);
-  margin-top: 24px;
-  margin-bottom: 32px;
+    0 2px 0 #d4b896,
+    0 4px 0 #c9a97e,
+    0 10px 30px -5px rgba(100, 60, 20, 0.12);
+  /* stacked-card look with double bottom borders */
+  position: relative;
 }
 
-/* Inputs & textareas */
+/* Subtle ruled-lines effect inside the form card */
+.form-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 30px;
+  bottom: 0;
+  width: 1px;
+  background: rgba(200, 80, 80, 0.12);
+  pointer-events: none;
+}
+
+/* Inputs & textareas: notebook feel */
 .form-box input,
 .form-box textarea {
   display: block;
   width: 100%;
-  font-family: 'Poppins', Arial, sans-serif;
-  font-size: 14px;
-  color: #3b1106;
-  background-color: rgba(255, 251, 245, 0.9);
-  border: 1.5px solid #fcd4a8;
-  border-radius: 11px;
-  padding: 12px 14px;
-  margin-bottom: 14px;
+  font-family: 'Nunito', Georgia, serif;
+  font-size: 14.5px;
+  color: #3e2215;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1.5px dashed #c9a97e;
+  border-radius: 0;
+  padding: 10px 8px 10px 18px;
+  margin-bottom: 16px;
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
 .form-box textarea {
-  min-height: 85px;
+  min-height: 80px;
   resize: vertical;
+  border: 1.5px dashed #c9a97e;
+  border-radius: 6px;
+  padding: 12px 14px;
 }
 
 .form-box input::placeholder,
 .form-box textarea::placeholder {
-  color: #a8826d;
+  color: #b39a7d;
+  font-style: italic;
 }
 
 .form-box input:focus,
 .form-box textarea:focus {
-  border-color: #f97316;
-  background-color: #ffffff;
-  box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.16);
+  border-color: #8b5e3c;
+  background-color: rgba(255, 248, 235, 0.6);
 }
 
-/* Add Recipe button */
+/* Add Recipe button: warm brown, old-fashioned */
 #addBtn {
   display: block;
   width: 100%;
-  font-family: 'Poppins', Arial, sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  color: #ffffff;
-  background: linear-gradient(135deg, #f97316 0%, #dc5b0a 100%);
-  border: none;
-  border-radius: 11px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fdf6ec;
+  background: linear-gradient(180deg, #8b5e3c 0%, #6b4226 100%);
+  border: 2px solid #5a3720;
+  border-radius: 6px;
   padding: 13px 20px;
   cursor: pointer;
-  letter-spacing: 0.3px;
-  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.30);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 3px 8px rgba(90, 55, 32, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 #addBtn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 7px 20px rgba(234, 88, 12, 0.40);
-  filter: brightness(1.06);
+  background: linear-gradient(180deg, #9d6b45 0%, #7a4d2e 100%);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 5px 14px rgba(90, 55, 32, 0.30);
 }
 
 #addBtn:active {
   transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(234, 88, 12, 0.25);
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.15),
+    0 1px 4px rgba(90, 55, 32, 0.20);
 }
 
-/* ─── Recipe cards ─── */
+/* ─── Recipe cards (vintage card style) ─── */
 .recipe {
-  background: rgba(255, 255, 255, 0.90);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: 16px;
+  background: linear-gradient(180deg, #fffdf8 0%, #faf3e8 100%);
+  border: 1px solid #d4b896;
+  border-radius: 4px;
   padding: 0;
-  margin-top: 18px;
-  border-left: 5px solid #f97316;
-  box-shadow: 0 4px 18px rgba(120, 53, 15, 0.07);
+  margin-top: 22px;
+  border-left: 5px solid #8b5e3c;
+  box-shadow:
+    0 2px 0 rgba(180, 140, 100, 0.15),
+    0 6px 20px rgba(100, 60, 20, 0.10);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   word-wrap: break-word;
   overflow: hidden;
+  position: relative;
 }
 
 /* Recipe image area */
 .recipe-img {
   width: 100%;
-  height: 200px;
+  height: 210px;
   overflow: hidden;
-  background-color: #fef5ea;
+  background-color: #f0e2d0;
+  border-bottom: 1px solid #d4b896;
 }
 
 .recipe-img img {
@@ -202,12 +239,14 @@ h1::after {
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.4s ease;
+  filter: saturate(0.9) contrast(1.02);
+  transition: transform 0.5s ease, filter 0.5s ease;
 }
 
-/* Subtle zoom on card hover */
+/* Warm photo effect on hover */
 .recipe:hover .recipe-img img {
-  transform: scale(1.04);
+  transform: scale(1.05);
+  filter: saturate(1) contrast(1.05);
 }
 
 /* Placeholder for missing images */
@@ -218,64 +257,72 @@ h1::after {
   align-items: center;
   justify-content: center;
   font-size: 3.5rem;
-  background: linear-gradient(135deg, #fff7ed 0%, #fde1b9 100%);
+  background: linear-gradient(135deg, #f5ebe0 0%, #e8d5bc 50%, #dfc8a8 100%);
 }
 
 .recipe:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 28px rgba(120, 53, 15, 0.14);
+  transform: translateY(-4px);
+  box-shadow:
+    0 4px 0 rgba(180, 140, 100, 0.12),
+    0 14px 30px rgba(100, 60, 20, 0.16);
 }
 
+/* Recipe name — serif, elegant */
 .recipe h3 {
-  color: #3b1106;
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin: 16px 20px 8px;
+  font-family: 'Playfair Display', Georgia, serif;
+  color: #4a2511;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 18px 22px 6px;
 }
 
-/* Small decorative line under recipe name */
+/* Decorative swirl divider under recipe name */
 .recipe h3::after {
-  content: '';
+  content: '~ ~ ~';
   display: block;
-  width: 40px;
-  height: 3px;
-  background: linear-gradient(90deg, #f97316, #fbbf24);
-  border-radius: 3px;
-  margin-top: 6px;
+  font-size: 0.75rem;
+  color: #c4956a;
+  font-weight: 400;
+  margin-top: 5px;
+  letter-spacing: 4px;
 }
 
 .recipe p {
-  color: #57331e;
+  color: #5a3d28;
   font-size: 13.5px;
-  line-height: 1.65;
-  margin: 8px 20px;
+  line-height: 1.7;
+  margin: 8px 22px;
 }
 
 .recipe p strong {
-  color: #d9520c;
+  font-family: 'Playfair Display', Georgia, serif;
+  color: #8b5e3c;
   font-weight: 600;
+  font-size: 14px;
 }
 
-/* Delete button */
+/* Delete button: muted red, fits the vintage theme */
 .recipe button {
-  font-family: 'Poppins', Arial, sans-serif;
-  background-color: #ef4444;
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  padding: 6px 14px;
-  font-size: 13px;
-  font-weight: 500;
+  font-family: 'Nunito', Georgia, serif;
+  background-color: #c0392b;
+  color: #fdf6ec;
+  border: 1px solid #a33025;
+  border-radius: 4px;
+  padding: 6px 16px;
+  font-size: 12.5px;
+  font-weight: 600;
   cursor: pointer;
-  margin: 12px 20px 18px;
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.22);
+  margin: 14px 22px 20px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(192, 57, 43, 0.20);
   transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
 }
 
 .recipe button:hover {
-  background-color: #dc2626;
+  background-color: #a93226;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);
+  box-shadow: 0 4px 10px rgba(169, 50, 38, 0.30);
 }
 
 .recipe button:active {
@@ -283,48 +330,41 @@ h1::after {
 }
 
 /* ─── Mobile responsive ─── */
-@media (max-width: 480px) {
+@media (max-width: 520px) {
   body {
-    padding: 24px 14px 40px;
-  }
-
-  body::before,
-  body::after {
-    font-size: 1.5rem;
-    letter-spacing: 10px;
+    padding: 28px 14px 50px;
   }
 
   h1 {
-    font-size: 1.8rem;
-    margin-bottom: 6px;
+    font-size: 2rem;
   }
 
-  h1::after {
-    font-size: 0.75rem;
+  .tagline {
+    font-size: 0.85rem;
   }
 
   .form-box {
-    padding: 18px;
-    border-radius: 14px;
+    padding: 20px 18px;
   }
 
-  .recipe {
-    border-radius: 12px;
+  .form-box::before {
+    left: 20px;
   }
 
   .recipe-img {
-    height: 160px;
+    height: 170px;
   }
 
   .recipe h3 {
-    margin: 12px 14px 8px;
+    margin: 14px 16px 6px;
+    font-size: 1.15rem;
   }
 
   .recipe p {
-    margin: 6px 14px;
+    margin: 6px 16px;
   }
 
   .recipe button {
-    margin: 10px 14px 14px;
+    margin: 12px 16px 16px;
   }
 }
