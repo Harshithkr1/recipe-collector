@@ -4,18 +4,91 @@
   padding: 0;
 }
 
-/* ─── Warm spice-toned page background ─── */
+/* ─── Page base ─── */
 html {
   min-height: 100%;
-  background-color: #fdf5ec;
-  background-image:
-    radial-gradient(ellipse at 10% 10%, rgba(217, 119, 6, 0.07) 0%, transparent 55%),
-    radial-gradient(ellipse at 90% 15%, rgba(180, 83, 9, 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 60%, rgba(245, 158, 11, 0.05) 0%, transparent 55%),
-    radial-gradient(ellipse at 20% 90%, rgba(146, 64, 14, 0.05) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 85%, rgba(234, 88, 12, 0.04) 0%, transparent 50%),
-    linear-gradient(170deg, #fefaf4 0%, #fdf0de 30%, #fce4c8 60%, #f8d6ab 100%);
-  background-attachment: fixed;
+  background-color: #f7eee1;
+}
+
+/* ─── Animated Kitchen Background ─── */
+.kitchen-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.kitchen-bg-photo {
+  position: absolute;
+  top: -5%;
+  left: -5%;
+  width: 110%;
+  height: 110%;
+  background-image: url('bg.jpg');
+  background-position: center 35%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  animation: kitchenPanZoom 36s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+/* Warm translucent tint to keep text sharp while kitchen remains visible */
+.kitchen-bg-tint {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(255, 250, 243, 0.40) 0%, rgba(249, 239, 226, 0.60) 65%, rgba(230, 212, 188, 0.78) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.20) 0%, rgba(55, 30, 15, 0.20) 100%);
+  backdrop-filter: blur(1.5px);
+  -webkit-backdrop-filter: blur(1.5px);
+}
+
+/* Moving sunlight glow shimmer across the kitchen window & island */
+.kitchen-sunlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at 32% 22%, rgba(255, 248, 220, 0.42) 0%, rgba(255, 236, 190, 0.18) 35%, transparent 65%);
+  animation: kitchenSunlight 11s ease-in-out infinite alternate;
+}
+
+@keyframes kitchenPanZoom {
+  0% {
+    transform: scale(1) translate(0%, 0%);
+  }
+  30% {
+    transform: scale(1.06) translate(-1.2%, -0.8%);
+  }
+  70% {
+    transform: scale(1.09) translate(1.1%, -1%);
+  }
+  100% {
+    transform: scale(1.05) translate(-0.6%, 0.6%);
+  }
+}
+
+@keyframes kitchenSunlight {
+  0% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.80;
+    transform: scale(1.06) translate(12px, -6px);
+  }
+  100% {
+    opacity: 0.45;
+    transform: scale(1.02) translate(-6px, 8px);
+  }
 }
 
 /* ─── Floating spice/herb particles container ─── */
@@ -26,7 +99,7 @@ html {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
   overflow: hidden;
 }
 
@@ -211,10 +284,25 @@ body::after {
 body::before { top: 0; }
 body::after  { bottom: 0; }
 
-/* All content above the particles */
-body > *:not(.spice-bg) {
+/* All content above the animated backgrounds */
+body > *:not(.kitchen-bg):not(.spice-bg) {
   position: relative;
-  z-index: 1;
+  z-index: 2;
+}
+
+/* ─── Header Box ─── */
+.header-box {
+  text-align: center;
+  background: rgba(255, 252, 247, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(217, 196, 165, 0.85);
+  border-radius: 8px;
+  padding: 24px 20px 20px;
+  margin-bottom: 24px;
+  box-shadow:
+    0 4px 20px rgba(60, 34, 18, 0.10),
+    0 1px 0 rgba(255, 255, 255, 0.8) inset;
 }
 
 /* ─── Main heading ─── */
@@ -254,16 +342,18 @@ h1 {
 
 /* ─── Form card (notecard look) ─── */
 .form-box {
-  background: linear-gradient(180deg, #fffcf7 0%, #fdf6ec 100%);
+  background: rgba(255, 252, 247, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border: 1px solid #d9c4a5;
-  border-radius: 4px;
+  border-radius: 6px;
   padding: 28px 26px;
   margin-top: 20px;
   margin-bottom: 36px;
   box-shadow:
     0 2px 0 #d4b896,
     0 4px 0 #c9a97e,
-    0 10px 30px -5px rgba(100, 60, 20, 0.12);
+    0 12px 35px -5px rgba(80, 45, 15, 0.18);
   position: relative;
 }
 
@@ -355,15 +445,17 @@ h1 {
 
 /* ─── Recipe cards ─── */
 .recipe {
-  background: linear-gradient(180deg, #fffdf8 0%, #faf3e8 100%);
+  background: rgba(255, 253, 248, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid #d4b896;
-  border-radius: 4px;
+  border-radius: 6px;
   padding: 0;
   margin-top: 22px;
   border-left: 5px solid #8b5e3c;
   box-shadow:
-    0 2px 0 rgba(180, 140, 100, 0.15),
-    0 6px 20px rgba(100, 60, 20, 0.10);
+    0 2px 0 rgba(180, 140, 100, 0.18),
+    0 10px 28px rgba(70, 35, 15, 0.13);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   word-wrap: break-word;
   overflow: hidden;

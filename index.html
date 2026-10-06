@@ -10,6 +10,13 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Animated Kitchen Background -->
+  <div class="kitchen-bg" aria-hidden="true">
+    <div class="kitchen-bg-photo"></div>
+    <div class="kitchen-bg-tint"></div>
+    <div class="kitchen-sunlight"></div>
+  </div>
+
   <!-- Floating spice & herb decorations -->
   <div class="spice-bg" aria-hidden="true">
     <span class="spice s1"></span>
@@ -28,8 +35,11 @@
     <span class="spice s14"></span>
     <span class="spice s15"></span>
   </div>
-  <h1>🍳 Recipe Collector</h1>
-  <p class="tagline">~ Your personal family cookbook ~</p>
+
+  <header class="header-box">
+    <h1>🍳 Recipe Collector</h1>
+    <p class="tagline">~ Your personal family cookbook ~</p>
+  </header>
 
   <div class="form-box">
     <input type="text" id="name" placeholder="Recipe name">
