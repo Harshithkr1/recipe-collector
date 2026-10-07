@@ -13,6 +13,33 @@ const statTotal = document.getElementById('statTotal');
 const statFavorites = document.getElementById('statFavorites');
 const statCategories = document.getElementById('statCategories');
 const toastEl = document.getElementById('toast');
+const darkModeToggle = document.getElementById('darkModeToggle');
+
+const DARK_MODE_KEY = 'darkMode';
+
+// ─── Dark mode: apply saved preference immediately ───
+function applyDarkMode(isDark) {
+  if (isDark) {
+    document.body.classList.add('dark');
+    if (darkModeToggle) darkModeToggle.textContent = '☀️';
+  } else {
+    document.body.classList.remove('dark');
+    if (darkModeToggle) darkModeToggle.textContent = '🌙';
+  }
+}
+
+// Load saved dark mode preference on startup
+applyDarkMode(localStorage.getItem(DARK_MODE_KEY) === 'true');
+
+// Toggle button click handler
+if (darkModeToggle) {
+  darkModeToggle.addEventListener('click', () => {
+    const isDark = !document.body.classList.contains('dark');
+    applyDarkMode(isDark);
+    localStorage.setItem(DARK_MODE_KEY, isDark);
+    showToast(isDark ? '🌙 Dark mode enabled' : '☀️ Light mode enabled');
+  });
+}
 
 const STORAGE_KEY = 'recipes';
 
