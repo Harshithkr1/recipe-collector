@@ -365,6 +365,14 @@ function renderRecipes() {
       startEdit(recipe.id);
     });
 
+    const printBtn = document.createElement('button');
+    printBtn.className = 'print-btn';
+    printBtn.textContent = '🖨️ Print';
+    printBtn.setAttribute('title', 'Print recipe');
+    printBtn.addEventListener('click', () => {
+      printRecipe(card);
+    });
+
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'delete-btn';
     deleteBtn.textContent = '🗑️ Delete';
@@ -374,6 +382,7 @@ function renderRecipes() {
     });
 
     cardFooter.appendChild(editBtn);
+    cardFooter.appendChild(printBtn);
     cardFooter.appendChild(deleteBtn);
 
     card.appendChild(nameEl);
@@ -394,6 +403,28 @@ function escapeHtml(str) {
     "'": '&#39;',
     '"': '&quot;'
   }[tag] || tag));
+}
+
+// Print an individual recipe card cleanly
+function printRecipe(card) {
+  // Clear print-target from any previously targeted cards
+  document.querySelectorAll('.recipe.print-target').forEach(el => el.classList.remove('print-target'));
+
+  // Mark the chosen card
+  card.classList.add('print-target');
+
+  // Clean up when print dialog finishes
+  const cleanup = () => {
+    card.classList.remove('print-target');
+    window.removeEventListener('afterprint', cleanup);
+  };
+  window.addEventListener('afterprint', cleanup);
+
+  // Invoke browser print dialog
+  window.print();
+
+  // Remove the print-target class
+  card.classList.remove('print-target');
 }
 
 // Delete a recipe by ID
