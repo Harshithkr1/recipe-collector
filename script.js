@@ -97,6 +97,12 @@ const sampleRecipes = [
 // Active filter states
 let activeCategory = 'all';
 let searchQuery = '';
+let editingRecipeId = null;
+
+// DOM refs for edit mode
+const formBox = document.querySelector('.form-box');
+const formTitle = document.querySelector('.form-title');
+const cancelEditBtn = document.getElementById('cancelEditBtn');
 
 // Helper: Normalize recipe structure for backward compatibility
 function normalizeRecipe(r, idx) {
@@ -348,6 +354,14 @@ function renderRecipes() {
     const cardFooter = document.createElement('div');
     cardFooter.className = 'recipe-card-footer';
 
+    const editBtn = document.createElement('button');
+    editBtn.className = 'edit-btn';
+    editBtn.textContent = '✏️ Edit';
+    editBtn.setAttribute('title', 'Edit recipe');
+    editBtn.addEventListener('click', () => {
+      startEdit(recipe.id);
+    });
+
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'delete-btn';
     deleteBtn.textContent = '🗑️ Delete';
@@ -356,6 +370,7 @@ function renderRecipes() {
       deleteRecipe(recipe.id, recipe.name);
     });
 
+    cardFooter.appendChild(editBtn);
     cardFooter.appendChild(deleteBtn);
 
     card.appendChild(nameEl);
@@ -383,6 +398,9 @@ function deleteRecipe(id, name) {
   if (!confirm(`Are you sure you want to remove "${name || 'this recipe'}" from your cookbook?`)) {
     return;
   }
+  if (editingRecipeId === id) {
+    cancelEdit();
+  }
   let recipes = getRecipes();
   recipes = recipes.filter(r => r.id !== id);
   saveRecipes(recipes);
@@ -392,7 +410,59 @@ function deleteRecipe(id, name) {
   renderRecipes();
 }
 
-// Add Recipe button click handler
+// ─── Edit mode helpers ───
+function startEdit(id) {
+  const recipes = getRecipes();
+  const recipe = recipes.find(r => r.id === id);
+  if (!recipe) return;
+
+  editingRecipeId = id;
+
+  // Populate form fields
+  nameInput.value = recipe.name;
+  if (categorySelect) categorySelect.value = recipe.category;
+  ingredientsInput.value = recipe.ingredients;
+  stepsInput.value = recipe.steps;
+  imageUrlInput.value = recipe.imageUrl;
+
+  // Switch button text & show cancel
+  addBtn.textContent = 'Save Changes';
+  if (cancelEditBtn) cancelEditBtn.style.display = 'inline-block';
+  if (formBox) formBox.classList.add('editing');
+  if (formTitle) formTitle.textContent = '✦ Editing Recipe ✦';
+
+  // Scroll to form
+  if (formBox) formBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  nameInput.focus();
+
+  showToast(`✏️ Editing "${recipe.name}"`);
+}
+
+function cancelEdit() {
+  editingRecipeId = null;
+
+  // Clear form fields
+  nameInput.value = '';
+  if (categorySelect) categorySelect.value = 'Main Course';
+  ingredientsInput.value = '';
+  stepsInput.value = '';
+  imageUrlInput.value = '';
+
+  // Reset button text & hide cancel
+  addBtn.textContent = 'Add Recipe';
+  if (cancelEditBtn) cancelEditBtn.style.display = 'none';
+  if (formBox) formBox.classList.remove('editing');
+  if (formTitle) formTitle.textContent = '✦ Write a New Recipe ✦';
+}
+
+if (cancelEditBtn) {
+  cancelEditBtn.addEventListener('click', () => {
+    cancelEdit();
+    showToast('Edit cancelled');
+  });
+}
+
+// Add / Save Recipe button click handler
 addBtn.addEventListener('click', () => {
   const name = nameInput.value.trim();
 
@@ -402,31 +472,54 @@ addBtn.addEventListener('click', () => {
     return;
   }
 
-  const newRecipe = {
-    id: 'recipe_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
-    name: name,
-    category: categorySelect ? categorySelect.value : 'Main Course',
-    isFavorite: false,
-    ingredients: ingredientsInput.value.trim(),
-    steps: stepsInput.value.trim(),
-    imageUrl: imageUrlInput.value.trim()
-  };
-
   const recipes = getRecipes();
-  recipes.unshift(newRecipe); // Place new recipe at top
-  saveRecipes(recipes);
 
-  // Clear form fields
-  nameInput.value = '';
-  ingredientsInput.value = '';
-  stepsInput.value = '';
-  imageUrlInput.value = '';
+  if (editingRecipeId) {
+    // ── Save changes to existing recipe ──
+    const idx = recipes.findIndex(r => r.id === editingRecipeId);
+    if (idx === -1) {
+      showToast('⚠️ Recipe not found. It may have been deleted.');
+      cancelEdit();
+      return;
+    }
 
-  showToast(`Added "${newRecipe.name}" to ${newRecipe.category}! 🍳`);
+    recipes[idx].name = name;
+    recipes[idx].category = categorySelect ? categorySelect.value : 'Main Course';
+    recipes[idx].ingredients = ingredientsInput.value.trim();
+    recipes[idx].steps = stepsInput.value.trim();
+    recipes[idx].imageUrl = imageUrlInput.value.trim();
+    // isFavorite is intentionally preserved
 
-  // If currently filtering another category, switch to the added category or 'all'
-  if (activeCategory !== 'all' && activeCategory !== newRecipe.category) {
-    activeCategory = newRecipe.category;
+    saveRecipes(recipes);
+    showToast(`Updated "${name}" successfully! ✅`);
+    cancelEdit();
+  } else {
+    // ── Add new recipe ──
+    const newRecipe = {
+      id: 'recipe_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+      name: name,
+      category: categorySelect ? categorySelect.value : 'Main Course',
+      isFavorite: false,
+      ingredients: ingredientsInput.value.trim(),
+      steps: stepsInput.value.trim(),
+      imageUrl: imageUrlInput.value.trim()
+    };
+
+    recipes.unshift(newRecipe); // Place new recipe at top
+    saveRecipes(recipes);
+
+    // Clear form fields
+    nameInput.value = '';
+    ingredientsInput.value = '';
+    stepsInput.value = '';
+    imageUrlInput.value = '';
+
+    showToast(`Added "${newRecipe.name}" to ${newRecipe.category}! 🍳`);
+
+    // If currently filtering another category, switch to the added category or 'all'
+    if (activeCategory !== 'all' && activeCategory !== newRecipe.category) {
+      activeCategory = newRecipe.category;
+    }
   }
 
   renderCategoryTabs(recipes);
