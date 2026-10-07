@@ -14,6 +14,9 @@ const statFavorites = document.getElementById('statFavorites');
 const statCategories = document.getElementById('statCategories');
 const toastEl = document.getElementById('toast');
 const darkModeToggle = document.getElementById('darkModeToggle');
+const exportBtn = document.getElementById('exportBtn');
+const importBtn = document.getElementById('importBtn');
+const importFileInput = document.getElementById('importFileInput');
 
 const DARK_MODE_KEY = 'darkMode';
 
@@ -605,3 +608,122 @@ if (surpriseMeBtn) {
     }, 300);
   });
 }
+
+// ─── Export & Import Recipes ───
+function exportRecipes() {
+  const recipes = getRecipes();
+  const dataStr = JSON.stringify(recipes, null, 2);
+  const blob = new Blob([dataStr], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'recipes-backup.json';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+
+  showToast(`📥 Exported ${recipes.length} ${recipes.length === 1 ? 'recipe' : 'recipes'} to recipes-backup.json!`);
+}
+
+if (exportBtn) {
+  exportBtn.addEventListener('click', exportRecipes);
+}
+
+if (importBtn && importFileInput) {
+  importBtn.addEventListener('click', () => {
+    importFileInput.value = '';
+    importFileInput.click();
+  });
+
+  importFileInput.addEventListener('change', (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      try {
+        const parsed = JSON.parse(event.target.result);
+
+        // Validation: Must be an array of recipes
+        if (!Array.isArray(parsed)) {
+          showToast('⚠️ Invalid file: Content must be a JSON array of recipes.');
+          return;
+        }
+
+        if (parsed.length === 0) {
+          showToast('⚠️ Invalid file: The imported recipe array is empty.');
+          return;
+        }
+
+        // Each recipe must be an object with at least a valid name
+        const allHaveName = parsed.every(r => r && typeof r === 'object' && typeof r.name === 'string' && r.name.trim().length > 0);
+        if (!allHaveName) {
+          showToast('⚠️ Invalid file: Every recipe must have at least a name.');
+          return;
+        }
+
+        // Merge into existing recipes, skipping duplicates by name
+        const currentRecipes = getRecipes();
+        const existingNames = new Set(currentRecipes.map(r => (r.name || '').trim().toLowerCase()));
+        const existingIds = new Set(currentRecipes.map(r => r.id));
+
+        let addedCount = 0;
+        let skippedCount = 0;
+        const newRecipes = [];
+
+        parsed.forEach((item) => {
+          const trimmedName = item.name.trim();
+          const nameKey = trimmedName.toLowerCase();
+
+          if (existingNames.has(nameKey)) {
+            skippedCount++;
+          } else {
+            existingNames.add(nameKey);
+
+            let recipeId = item.id;
+            if (!recipeId || existingIds.has(recipeId)) {
+              recipeId = 'recipe_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+            }
+            existingIds.add(recipeId);
+
+            const normalized = {
+              id: recipeId,
+              name: trimmedName,
+              category: typeof item.category === 'string' && item.category.trim() ? item.category.trim() : 'Main Course',
+              isFavorite: Boolean(item.isFavorite),
+              ingredients: typeof item.ingredients === 'string' ? item.ingredients.trim() : (Array.isArray(item.ingredients) ? item.ingredients.join(', ') : ''),
+              steps: typeof item.steps === 'string' ? item.steps.trim() : (Array.isArray(item.steps) ? item.steps.join('\n') : ''),
+              imageUrl: typeof item.imageUrl === 'string' ? item.imageUrl.trim() : ''
+            };
+
+            newRecipes.push(normalized);
+            addedCount++;
+          }
+        });
+
+        if (addedCount > 0) {
+          const updated = [...currentRecipes, ...newRecipes];
+          saveRecipes(updated);
+          renderCategoryTabs(updated);
+          renderRecipes();
+
+          const dupText = skippedCount > 0 ? ` (${skippedCount} duplicate${skippedCount === 1 ? '' : 's'} skipped)` : '';
+          showToast(`✅ Successfully imported ${addedCount} ${addedCount === 1 ? 'recipe' : 'recipes'}${dupText}!`);
+        } else {
+          showToast(`ℹ️ No new recipes imported (${skippedCount} duplicate${skippedCount === 1 ? '' : 's'} skipped).`);
+        }
+      } catch (err) {
+        console.error('Failed to parse imported JSON:', err);
+        showToast('⚠️ Invalid file: Unable to parse JSON.');
+      }
+    };
+
+    reader.onerror = function() {
+      showToast('⚠️ Error reading the selected file.');
+    };
+
+    reader.readAsText(file);
+  });
+}
+
