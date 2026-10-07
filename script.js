@@ -440,3 +440,48 @@ if (!localStorage.getItem(STORAGE_KEY)) {
 const initialRecipes = getRecipes();
 renderCategoryTabs(initialRecipes);
 renderRecipes();
+
+// ─── "What should I cook?" surprise picker ───
+const surpriseMeBtn = document.getElementById('surpriseMeBtn');
+
+if (surpriseMeBtn) {
+  surpriseMeBtn.addEventListener('click', () => {
+    // Grab currently visible recipe cards from the DOM
+    const visibleCards = recipeList.querySelectorAll('.recipe[data-id]');
+
+    if (visibleCards.length === 0) {
+      showToast('🍽️ No recipes to pick from! Add some dishes first.');
+      return;
+    }
+
+    // Pick a random card
+    const randomIndex = Math.floor(Math.random() * visibleCards.length);
+    const chosenCard = visibleCards[randomIndex];
+    const recipeName = chosenCard.querySelector('h3')?.textContent || 'a tasty dish';
+
+    // Remove glow from any previously highlighted card
+    recipeList.querySelectorAll('.recipe.glow-highlight').forEach(el => {
+      el.classList.remove('glow-highlight');
+    });
+
+    // Scroll smoothly into view
+    chosenCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    // Trigger glow after a small delay so the scroll has time to start
+    setTimeout(() => {
+      // Force animation restart by removing and re-adding the class
+      chosenCard.classList.remove('glow-highlight');
+      // Trigger reflow so the browser treats this as a fresh animation
+      void chosenCard.offsetWidth;
+      chosenCard.classList.add('glow-highlight');
+
+      showToast(`🎲 Tonight you're cooking: ${recipeName}!`);
+
+      // Clean up the class after the animation finishes
+      chosenCard.addEventListener('animationend', function onEnd() {
+        chosenCard.classList.remove('glow-highlight');
+        chosenCard.removeEventListener('animationend', onEnd);
+      });
+    }, 300);
+  });
+}

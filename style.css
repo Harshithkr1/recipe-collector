@@ -933,6 +933,111 @@ h1 {
   transform: translateX(-50%) translateY(0);
 }
 
+/* ─── "What should I cook?" Surprise Button ─── */
+.surprise-me-btn {
+  flex-shrink: 0;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fdf6ec;
+  background: linear-gradient(135deg, #b07840 0%, #8b5e3c 50%, #6b4226 100%);
+  border: 1.5px solid #5a3720;
+  border-radius: 20px;
+  padding: 8px 16px;
+  margin-left: 10px;
+  cursor: pointer;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 3px 10px rgba(90, 55, 32, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.25s ease, background 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.surprise-me-btn::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -75%;
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 248, 220, 0.25) 45%,
+    rgba(255, 248, 220, 0.35) 50%,
+    rgba(255, 248, 220, 0.25) 55%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+
+.surprise-me-btn:hover::before {
+  left: 125%;
+}
+
+.surprise-me-btn:hover {
+  background: linear-gradient(135deg, #c48a50 0%, #9d6b45 50%, #7a4d2e 100%);
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 6px 18px rgba(90, 55, 32, 0.35);
+}
+
+.surprise-me-btn:active {
+  transform: translateY(0) scale(0.97);
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.15),
+    0 2px 6px rgba(90, 55, 32, 0.2);
+}
+
+/* ─── Glow highlight animation for the picked recipe card ─── */
+@keyframes recipeGlow {
+  0% {
+    box-shadow:
+      0 0 0 0 rgba(217, 119, 6, 0),
+      0 2px 0 rgba(180, 140, 100, 0.18),
+      0 10px 28px rgba(70, 35, 15, 0.13);
+  }
+  15% {
+    box-shadow:
+      0 0 18px 6px rgba(217, 119, 6, 0.45),
+      0 0 40px 12px rgba(245, 158, 11, 0.18),
+      0 4px 0 rgba(180, 140, 100, 0.15),
+      0 16px 32px rgba(70, 35, 15, 0.18);
+  }
+  40% {
+    box-shadow:
+      0 0 12px 4px rgba(217, 119, 6, 0.30),
+      0 0 28px 8px rgba(245, 158, 11, 0.12),
+      0 4px 0 rgba(180, 140, 100, 0.15),
+      0 16px 32px rgba(70, 35, 15, 0.18);
+  }
+  70% {
+    box-shadow:
+      0 0 16px 5px rgba(217, 119, 6, 0.38),
+      0 0 36px 10px rgba(245, 158, 11, 0.15),
+      0 4px 0 rgba(180, 140, 100, 0.15),
+      0 16px 32px rgba(70, 35, 15, 0.18);
+  }
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(217, 119, 6, 0),
+      0 2px 0 rgba(180, 140, 100, 0.18),
+      0 10px 28px rgba(70, 35, 15, 0.13);
+  }
+}
+
+.recipe.glow-highlight {
+  animation: recipeGlow 1.6s ease-in-out;
+  border-left-color: #d97706;
+  z-index: 5;
+}
+
 /* ─── Mobile responsive ─── */
 @media (max-width: 520px) {
   body {
@@ -963,6 +1068,17 @@ h1 {
 
   .controls-panel {
     padding: 14px 14px;
+  }
+
+  .search-box {
+    flex-wrap: wrap;
+  }
+
+  .surprise-me-btn {
+    margin-left: 0;
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
   }
 
   .cat-pill {
